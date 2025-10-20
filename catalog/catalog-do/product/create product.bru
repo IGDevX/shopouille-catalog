@@ -1,0 +1,28 @@
+meta {
+  name: create product
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8081/product
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "string",
+    "slug": "string90",
+    "descriptionHtml": "string",
+    "seoTitle": "string",
+    "seoDescription": "string",
+    "isActive": true
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

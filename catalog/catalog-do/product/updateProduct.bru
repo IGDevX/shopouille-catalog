@@ -1,0 +1,31 @@
+meta {
+  name: updateProduct
+  type: http
+  seq: 3
+}
+
+patch {
+  url: http://localhost:8081/product/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "title": "string1",
+    "slug": "string2",
+    "descriptionHtml": "string3",
+    "seoTitle": "string4",
+    "seoDescription": "string5",
+    "isActive": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
