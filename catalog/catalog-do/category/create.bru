@@ -1,0 +1,24 @@
+meta {
+  name: create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8081/category
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "test",
+    "slug": "test",
+    "parent_id" : null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

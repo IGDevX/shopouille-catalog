@@ -1,0 +1,27 @@
+meta {
+  name: modify
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:8081/category/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 2
+}
+
+body:json {
+  {
+    "name": "test56",
+    "slug": "test23"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
