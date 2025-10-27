@@ -1,4 +1,4 @@
-name: Build Quarkus Docker Image
+name: Build Quarkus Docker Image (Gradle)
 
 on:
   push:
@@ -19,10 +19,9 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build Quarkus 
-        run: |
-          ./mvnw clean package -DskipTests
+      - name: Build Quarkus app
+        run: ./gradlew clean build -x test
 
-      - name: Build Docker image
+      - name: Build Docker image (JVM)
         run: |
           docker build -f src/main/docker/Dockerfile.jvm -t quarkus-app:latest .
