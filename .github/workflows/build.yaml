@@ -39,8 +39,14 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Set lowercase image name
+        id: vars
+        run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner=$owner" >> $GITHUB_OUTPUT
+
       - name: Tag & push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/quarkus-app
+          IMAGE_NAME=ghcr.io/${{ steps.vars.outputs.owner }}/quarkus-app
           docker tag quarkus-app:latest $IMAGE_NAME:latest
           docker push $IMAGE_NAME:latest
