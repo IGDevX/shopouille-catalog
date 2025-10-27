@@ -30,6 +30,8 @@ jobs:
         run: |
           docker build -f src/main/docker/Dockerfile.jvm -t shopouille-catalog:latest .
       - name: Save Docker image as artifact
+        run: docker save shopouille-catalog:latest -o shopouille-catalog.tar
+      - name: Save Docker image as artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
