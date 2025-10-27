@@ -1,5 +1,9 @@
 name: Build Quarkus Docker Image (Gradle)
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     branches: [ feat/basic-image_build_publish ]
@@ -25,3 +29,18 @@ jobs:
       - name: Build Docker image (JVM)
         run: |
           docker build -f src/main/docker/Dockerfile.jvm -t quarkus-app:latest .
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag & push Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/quarkus-app
+          docker tag quarkus-app:latest $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:latest
