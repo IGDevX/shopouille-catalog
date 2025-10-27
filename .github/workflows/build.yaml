@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image (JVM)
         run: |
-          docker build -f src/main/docker/Dockerfile.jvm -t quarkus-app:latest .
+          docker build -f src/main/docker/Dockerfile.jvm -t shopouille-catalog:latest .
   publish:
     needs: build
     runs-on: ubuntu-latest
