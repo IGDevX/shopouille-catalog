@@ -48,5 +48,5 @@ jobs:
       - name: Tag & push Docker image
         run: |
           IMAGE_NAME=ghcr.io/${{ steps.vars.outputs.owner }}/shopouille-catalog
-          docker tag quarkus-app:latest $IMAGE_NAME:latest
+          docker tag shopouille-catalog:latest $IMAGE_NAME:latest
           docker push $IMAGE_NAME:latest
