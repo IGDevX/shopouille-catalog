@@ -19,7 +19,6 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     implementation("io.quarkus:quarkus-micrometer-opentelemetry")
     implementation("io.quarkus:quarkus-opentelemetry")
-    implementation("io.opentelemetry:opentelemetry-exporter-logging:0.14.1")
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 
