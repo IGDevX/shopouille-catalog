@@ -6,7 +6,7 @@ permissions:
 
 on:
   push:
-    branches: [ feat/basic-image_build_publish ]
+    branches: [ dev ]
   pull_request:
 
 jobs:
