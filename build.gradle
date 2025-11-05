@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id 'jacoco'
+    id 'com.diffplug.spotless' version '8.0.0'
 }
 
 repositories {
@@ -21,6 +23,8 @@ dependencies {
     implementation("io.quarkus:quarkus-opentelemetry")
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'org.testcontainers:testcontainers:2.0.1'
+    implementation "io.quarkus:quarkus-jdbc-postgresql"
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.42'
@@ -47,4 +51,31 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.80
+            }
+        }
+    }
+}
+
+spotless {
+  java {
+    importOrder()
+    removeUnusedImports()
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
 }

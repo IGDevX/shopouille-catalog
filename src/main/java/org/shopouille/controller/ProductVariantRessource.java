@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import org.shopouille.dto.request.CreateProductVariant;
 import org.shopouille.dto.request.UpdateProductVariant;
 import org.shopouille.dto.request.UpdateStock;

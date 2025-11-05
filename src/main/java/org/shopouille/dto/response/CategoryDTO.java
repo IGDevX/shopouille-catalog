@@ -1,8 +1,7 @@
 package org.shopouille.dto.response;
 
-import org.shopouille.entity.Category;
-
 import lombok.Getter;
+import org.shopouille.entity.Category;
 
 @Getter
 public class CategoryDTO {

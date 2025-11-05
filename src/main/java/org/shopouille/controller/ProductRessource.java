@@ -1,11 +1,5 @@
 package org.shopouille.controller;
 
-import java.util.List;
-import java.util.Set;
-
-import org.shopouille.dto.request.CreateProduct;
-import org.shopouille.entity.Product;
-
 import io.quarkus.panache.common.Sort;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
@@ -19,6 +13,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
+import java.util.Set;
+import org.shopouille.dto.request.CreateProduct;
+import org.shopouille.entity.Product;
 
 @Path("/product")
 public class ProductRessource {

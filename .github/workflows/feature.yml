@@ -1,0 +1,10 @@
+name: Runs on push on feature/* branches
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  call:
+    uses: igdevx/ShopouilleBackend/.github/workflows/verify.yml@main

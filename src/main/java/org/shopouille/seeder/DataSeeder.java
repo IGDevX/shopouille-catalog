@@ -1,16 +1,14 @@
 package org.shopouille.seeder;
 
-import java.text.Normalizer;
-import java.time.Instant;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
-import org.shopouille.entity.Product;
-
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.transaction.Transactional;
+import java.text.Normalizer;
+import java.time.Instant;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
+import org.shopouille.entity.Product;
 
 @ApplicationScoped
 public class DataSeeder {

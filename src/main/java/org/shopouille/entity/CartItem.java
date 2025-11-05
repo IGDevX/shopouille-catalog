@@ -35,4 +35,3 @@ public class CartItem extends PanacheEntityBase {
     @JoinColumn(name = "cart_id")
     public Cart cart;
 }
-

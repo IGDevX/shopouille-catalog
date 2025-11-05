@@ -1,10 +1,5 @@
 package org.shopouille.controller;
 
-import org.shopouille.dto.request.category.CreateCategory;
-import org.shopouille.dto.request.category.ModifyCategory;
-import org.shopouille.dto.response.CategoryDTO;
-import org.shopouille.entity.Category;
-
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -15,6 +10,10 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.shopouille.dto.request.category.CreateCategory;
+import org.shopouille.dto.request.category.ModifyCategory;
+import org.shopouille.dto.response.CategoryDTO;
+import org.shopouille.entity.Category;
 
 @Path("/category")
 public class CategoryRessource {

@@ -50,5 +50,3 @@ class ProductCategoryId {
         return java.util.Objects.hash(variantId, mediaId);
     }
 }
-
-
