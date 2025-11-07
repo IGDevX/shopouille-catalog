@@ -10,6 +10,12 @@ import org.shopouille.dto.request.UpdateStock;
 import org.shopouille.entity.Product;
 import org.shopouille.entity.ProductVariant;
 
+import java.util.List;
+import java.util.Set;
+import io.quarkus.panache.common.Sort;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
+
 @Path("/variant")
 public class ProductVariantRessource {
 
@@ -23,6 +29,26 @@ public class ProductVariantRessource {
         }
         return Response.ok(variant).build();
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllVariants() {
+        Sort sort = Sort.by("id").ascending(); // tri par id croissant
+        List<ProductVariant> variants = ProductVariant.findAll(sort).list();
+        long total = ProductVariant.count();
+        return Response.ok(variants).header("X-Total-Count", total).build();
+    }
+
+    @GET
+    @Path("/by-product/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getVariantsByProduct(@PathParam("productId") Long productId) {
+        List<ProductVariant> variants = ProductVariant.find("product.id", productId).list();
+        long total = variants.size();
+        return Response.ok(variants).header("X-Total-Count", total).build();
+    }
+
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
