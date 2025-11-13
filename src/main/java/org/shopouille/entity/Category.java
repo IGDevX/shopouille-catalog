@@ -1,5 +1,13 @@
 package org.shopouille.entity;
 
+import java.time.Instant;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,11 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.Instant;
-import java.util.List;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "categories")
@@ -30,13 +34,11 @@ public class Category extends PanacheEntityBase {
     public Category parent;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnore
     public List<Category> children;
 
     @Column(nullable = false)
     public String name;
-
-    @Column(nullable = false, unique = true)
-    public String slug;
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")
