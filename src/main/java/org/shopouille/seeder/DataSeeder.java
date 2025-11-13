@@ -22,15 +22,15 @@ import jakarta.enterprise.event.Observes;
 import jakarta.transaction.Transactional;
 
 /**
- * Seeder just execute with dev profile
+ * Seeder just execute when quarkus.data-seeder.enabled=true
  */
 @ApplicationScoped
 public class DataSeeder {
 
     private static final Logger LOGGER = Logger.getLogger("DataSeeder");
 
-    @ConfigProperty(name = "quarkus.profile")
-    String activeProfile;
+    @ConfigProperty(name = "quarkus.data-seeder.enabled", defaultValue = "false")
+    boolean seederEnabled;
 
     private final Random random = new Random();
     private final AtomicInteger skuCounter = new AtomicInteger(1000);
@@ -83,7 +83,7 @@ public class DataSeeder {
 
     @Transactional
     public void seed(@Observes StartupEvent ev) {
-        if (!"dev".equals(activeProfile)) {
+        if (!seederEnabled) {
             LOGGER.info("Skip seeder (not dev)");
             return;
         }
