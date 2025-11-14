@@ -1,0 +1,16 @@
+name: Runs on push on main, staging & develop branch
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - develop
+
+jobs:
+  call:
+    uses: igdevx/ShopouilleBackend/.github/workflows/publish.yml@main
+    secrets: inherit
+    with:
+      dockerfile_path: src/main/docker/Dockerfile.native-micro
+      gradle_args: -Dquarkus.profile=prod -Dquarkus.native.enabled=true -Dquarkus.package.jar.enabled=false

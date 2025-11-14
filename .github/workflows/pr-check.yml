@@ -1,8 +1,10 @@
-name: Runs on pull request on develop branch
+name: Runs on pull request on main, staging & develop branches
 
 on:
   pull_request:
     branches:
+      - main
+      - staging
       - develop
 
 jobs:

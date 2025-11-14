@@ -1,0 +1,20 @@
+name: Runs on tagging a new version
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  promote:
+    uses: igdevx/ShopouilleBackend/.github/workflows/promote.yml@main
+    secrets: inherit
+    with:
+      sha: ${{ github.sha }}
+      tag: ${{ github.ref_name }}
+
+  release:
+    uses: igdevx/ShopouilleBackend/.github/workflows/release.yml@main
+    secrets: inherit
+    with:
+      tag: ${{ github.ref_name }}
