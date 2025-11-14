@@ -1,5 +1,6 @@
 package org.shopouille.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,13 +31,11 @@ public class Category extends PanacheEntityBase {
     public Category parent;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnore
     public List<Category> children;
 
     @Column(nullable = false)
     public String name;
-
-    @Column(nullable = false, unique = true)
-    public String slug;
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")

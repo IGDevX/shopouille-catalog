@@ -1,5 +1,6 @@
 package org.shopouille.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,11 +15,13 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "product_variants")
-public class ProductVariant extends PanacheEntityBase {
+public class Variant extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +29,13 @@ public class ProductVariant extends PanacheEntityBase {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     public Product product;
 
     @Column(nullable = false, unique = true)
     public String sku;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json", name = "attributes_json")
     public String attributesJson;
 
@@ -39,6 +44,7 @@ public class ProductVariant extends PanacheEntityBase {
 
     @Column(name = "weight_grams")
     public Integer weightGrams;
+
     @Column
     public String barcode;
 
@@ -57,5 +63,6 @@ public class ProductVariant extends PanacheEntityBase {
     public Instant updatedAt;
 
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
+    @JsonIgnore
     public List<ProductCategory> productCategories;
 }

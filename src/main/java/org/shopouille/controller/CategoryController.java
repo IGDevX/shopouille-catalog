@@ -1,34 +1,46 @@
 package org.shopouille.controller;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
+import java.util.Set;
 import org.shopouille.dto.request.category.CreateCategory;
 import org.shopouille.dto.request.category.ModifyCategory;
-import org.shopouille.dto.response.CategoryDTO;
 import org.shopouille.entity.Category;
 
 @Path("/category")
-public class CategoryRessource {
+public class CategoryController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAll() {
-		return Response
-		.ok(Category
-			.findAll()
-			.list()
-			.stream()
-			.map(Category.class::cast)
-			.map(CategoryDTO::fromEntity)
-			.toList()).build();
+	public Response getPaginatedCategories(
+			@DefaultValue("0") @QueryParam("pageIndex") Integer pageIndex,
+			@DefaultValue("-1") @QueryParam("pageSize") Integer pageSize,
+			@DefaultValue("id") @QueryParam("_sort") String sortField,
+			@DefaultValue("asc") @QueryParam("_order") String order) {
+		Set<String> allowed = Set.of("id", "name", "parent_id");
+		String field = (sortField != null && allowed.contains(sortField)) ? sortField : "";
+
+		boolean asc = "asc".equalsIgnoreCase(order);
+		Sort sort = asc ? Sort.by(field).ascending() : Sort.by(field).descending();
+
+		List<Category> categories;
+		categories = Category.findAll(sort).page(pageIndex, pageSize).list();
+
+		long total = Category.count();
+
+		return Response.ok(categories).header("X-Total-Count", total).build();
 	}
 
 	@GET
@@ -45,11 +57,10 @@ public class CategoryRessource {
 	public Response create(CreateCategory incoming) {
 		Category c = new Category();
 		c.name = incoming.name();
-		c.slug = incoming.slug();
-        if (incoming.parent_id().isPresent()){
-            Category parent = Category.findById(incoming.parent_id().get());
-            c.parent = parent;
-        }
+		if (incoming.parent_id().isPresent()) {
+			Category parent = Category.findById(incoming.parent_id().get());
+			c.parent = parent;
+		}
 		c.persist();
 		return c.id != null ? Response.ok().build() : Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -63,15 +74,12 @@ public class CategoryRessource {
 		if (existing == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-        if (partial.name() != null) {
-            existing.name = partial.name();
-        }
-        if (partial.slug() != null) {
-            existing.slug = partial.slug();
-        }
-        if (partial.parent_id() != null) {
-            existing.parent = Category.findById(partial.parent_id());
-        }
+		if (partial.name() != null) {
+			existing.name = partial.name();
+		}
+		if (partial.parent_id() != null) {
+			existing.parent = Category.findById(partial.parent_id());
+		}
 		return Response.ok().build();
 	}
 
@@ -81,10 +89,10 @@ public class CategoryRessource {
 	@Transactional
 	public Response delete(@PathParam("id") Long id) {
 		Category existing = Category.findById(id);
-        if (existing == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        existing.getChildren().forEach(child -> child.parent = null);
+		if (existing == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		existing.getChildren().forEach(child -> child.parent = null);
 		boolean deleted = Category.deleteById(id);
 		return deleted ? Response.ok().build() : Response.status(Response.Status.NOT_FOUND).build();
 	}

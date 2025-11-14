@@ -1,13 +1,16 @@
 package org.shopouille.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -34,8 +37,9 @@ public class Product extends PanacheEntityBase {
     @Column(columnDefinition = "TEXT", name = "seo_description")
     public String seoDescription;
 
-    @Column(nullable = false, name = "is_active")
-    public Boolean isActive;
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    public List<Variant> variants;
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")

@@ -29,7 +29,7 @@ public class CartItem extends PanacheEntityBase {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "variant_id")
-    public ProductVariant variant;
+    public Variant variant;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cart_id")
