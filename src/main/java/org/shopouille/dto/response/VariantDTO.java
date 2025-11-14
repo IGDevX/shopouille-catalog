@@ -3,7 +3,10 @@ package org.shopouille.dto.response;
 import lombok.Data;
 import org.shopouille.entity.Variant;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 @Data
+@RegisterForReflection
 public class VariantDTO {
     private Long id;
     private String sku;

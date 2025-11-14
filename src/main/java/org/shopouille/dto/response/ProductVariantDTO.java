@@ -4,7 +4,10 @@ import lombok.Data;
 import org.shopouille.entity.Product;
 import org.shopouille.entity.Variant;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 @Data
+@RegisterForReflection
 public class ProductVariantDTO {
     private Long id;
 
