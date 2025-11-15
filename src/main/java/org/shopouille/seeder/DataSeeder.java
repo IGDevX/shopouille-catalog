@@ -27,7 +27,7 @@ public class DataSeeder {
 
     private static final Logger LOGGER = Logger.getLogger("DataSeeder");
 
-    @ConfigProperty(name = "quarkus.data-seeder.enabled", defaultValue = "false")
+    @ConfigProperty(name = "app.data-seeder.enabled", defaultValue = "false")
     boolean seederEnabled;
 
     private final Random random = new Random();
