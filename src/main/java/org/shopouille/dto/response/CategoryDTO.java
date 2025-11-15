@@ -1,9 +1,8 @@
 package org.shopouille.dto.response;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import org.shopouille.entity.Category;
-
-import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @Getter
 @RegisterForReflection
