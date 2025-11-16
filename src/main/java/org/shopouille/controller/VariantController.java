@@ -120,7 +120,7 @@ public class VariantController {
     }
 
     @GET
-    @Path("/{id}/stock")
+    @Path("/stock/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStock(@PathParam("id") Long id) {
         VariantDTO variant = variantService.findById(id);
@@ -146,18 +146,24 @@ public class VariantController {
     }
 
     @PATCH
-    @Path("/{id}/stock")
+    @Path("/stock/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response updateStock(@PathParam("id") Long id, UpdateStock updateStock) {
-        VariantDTO variant = variantService.findById(id);
-        if (variant == null) {
+
+        if (updateStock.stock() < 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Stock invalide")
+                    .build();
+        }
+
+        VariantDTO updated = variantService.updateStock(id, updateStock.stock());
+        if (updated == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        if (updateStock.stock() < 0) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Stock invalide").build();
-        }
-        variant.setQuantity(updateStock.stock());
-        return Response.ok(variant).build();
+
+        return Response.ok(updated).build();
     }
+
 }
