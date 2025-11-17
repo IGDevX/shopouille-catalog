@@ -12,7 +12,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import org.jboss.logging.Logger;
 import org.shopouille.dto.request.CreateProduct;
 import org.shopouille.dto.response.ProductDTO;
 import org.shopouille.entity.Product;
@@ -20,8 +19,6 @@ import org.shopouille.service.ProductService;
 
 @Path("/product")
 public class ProductController {
-
-    private final Logger logger = Logger.getLogger(ProductController.class);
 
     private final ProductService productService;
 
@@ -41,6 +38,31 @@ public class ProductController {
 
         List<ProductDTO> products = productService.listAllProductsDTOs(pageIndex, pageSize, sortField, asc);
         long total = productService.count();
+
+        return Response.ok(products).header("X-Total-Count", total).build();
+    }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchProducts(
+            @QueryParam("q") String searchQuery,
+            @QueryParam("categoryId") Long categoryId,
+            @DefaultValue("0") @QueryParam("pageIndex") Integer pageIndex,
+            @QueryParam("pageSize") Integer pageSize,
+            @DefaultValue("id") @QueryParam("_sort") String sortField,
+            @DefaultValue("asc") @QueryParam("_order") String order) {
+
+        if (searchQuery == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Search query parameter 'q' is required")
+                    .build();
+        }
+
+        boolean asc = "asc".equalsIgnoreCase(order);
+
+        List<ProductDTO> products = productService.searchProducts(searchQuery, categoryId, pageIndex, pageSize, sortField, asc);
+        long total = productService.countSearchResults(searchQuery, categoryId);
 
         return Response.ok(products).header("X-Total-Count", total).build();
     }

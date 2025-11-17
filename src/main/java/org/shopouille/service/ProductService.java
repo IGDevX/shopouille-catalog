@@ -1,5 +1,6 @@
 package org.shopouille.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -35,6 +36,28 @@ public class ProductService {
 
     public long count() {
         return Product.count();
+    }
+
+    public List<ProductDTO> searchProducts(String searchQuery, Long categoryId, Integer pageIndex, Integer pageSize, String sortField, boolean asc) {
+        String field = (sortField != null && ALLOWED_SORT.contains(sortField)) ? sortField : "id";
+        Sort sort = asc ? Sort.by(field).ascending() : Sort.by(field).descending();
+
+        if (pageIndex == null)
+            pageIndex = 0;
+        if (pageSize == null || pageSize <= 0)
+            pageSize = 20;
+
+        PanacheQuery<Product> query = buildSearchQuery(searchQuery, categoryId, sort);
+
+        return query.page(pageIndex, pageSize)
+                .list()
+                .stream()
+                .map(ProductDTO::from)
+                .toList();
+    }
+
+    public long countSearchResults(String searchQuery, Long categoryId) {
+        return buildSearchQuery(searchQuery, categoryId, null).count();
     }
 
     public Product findById(Long id) {
@@ -76,5 +99,27 @@ public class ProductService {
         if (partial.publishedAt != null)
             existing.publishedAt = partial.publishedAt;
         return true;
+    }
+
+    private PanacheQuery<Product> buildSearchQuery(String searchQuery, Long categoryId, Sort sort) {
+        String term = searchQuery != null ? searchQuery : "";
+        String searchPattern = "%" + term + "%";
+
+        String basePredicate = "(LOWER(p.title) LIKE LOWER(?1) OR LOWER(p.slug) LIKE LOWER(?1) OR LOWER(p.descriptionHtml) LIKE LOWER(?1) "
+                + "OR LOWER(p.seoTitle) LIKE LOWER(?1) OR LOWER(p.seoDescription) LIKE LOWER(?1))";
+
+        if (categoryId != null) {
+            String predicate = basePredicate
+                    + " AND EXISTS (SELECT 1 FROM Variant v JOIN v.productCategories pc WHERE v.product = p AND pc.category.id = ?2)";
+            if (sort != null) {
+                return Product.find("SELECT p FROM Product p WHERE " + predicate, sort, searchPattern, categoryId);
+            }
+            return Product.find("SELECT p FROM Product p WHERE " + predicate, searchPattern, categoryId);
+        }
+
+        if (sort != null) {
+            return Product.find("SELECT p FROM Product p WHERE " + basePredicate, sort, searchPattern);
+        }
+        return Product.find("SELECT p FROM Product p WHERE " + basePredicate, searchPattern);
     }
 }
