@@ -1,1 +1,10 @@
-./gradlew spotlessApply && git add .
+#!/bin/sh
+changed_files=$(git diff --cached --name-only)
+
+# Run Gradle checks only if files in src/ changed
+if echo "$changed_files" | grep -q '^src/'; then
+  echo "Changes detected in src/, running Gradle checks..."
+  ./gradlew spotlessApply fixGradleLint && git add .
+else
+  echo "No changes in src/, skipping Gradle checks."
+fi
