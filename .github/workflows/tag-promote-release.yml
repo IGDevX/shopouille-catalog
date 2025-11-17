@@ -25,5 +25,4 @@ jobs:
     secrets: inherit
     with:
       repository: ${{ github.repository }}
-      branch: ${{ github.ref_name }}
       tag: ${{ github.ref_name }}
