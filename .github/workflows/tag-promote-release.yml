@@ -18,3 +18,12 @@ jobs:
     secrets: inherit
     with:
       tag: ${{ github.ref_name }}
+
+  dispatch:
+    needs: [promote, release]
+    uses: igdevx/ShopouilleBackend/.github/workflows/dispatch.yml@main
+    secrets: inherit
+    with:
+      repository: ${{ github.repository }}
+      branch: ${{ github.ref_name }}
+      tag: ${{ github.ref_name }}
