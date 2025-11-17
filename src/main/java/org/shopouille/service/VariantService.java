@@ -114,4 +114,16 @@ public class VariantService {
             existing.quantity = partial.quantity;
         return true;
     }
+
+    @Transactional
+    public VariantDTO updateStock(Long id, Integer newStock) {
+        Variant variant = Variant.findById(id);
+        if (variant == null) {
+            return null;
+        }
+
+        variant.quantity = newStock;
+        return VariantDTO.from(variant);
+    }
+
 }

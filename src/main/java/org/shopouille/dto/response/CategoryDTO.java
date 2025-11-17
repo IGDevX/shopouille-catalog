@@ -1,9 +1,11 @@
 package org.shopouille.dto.response;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import org.shopouille.entity.Category;
 
 @Getter
+@RegisterForReflection
 public class CategoryDTO {
 
     private Long id;

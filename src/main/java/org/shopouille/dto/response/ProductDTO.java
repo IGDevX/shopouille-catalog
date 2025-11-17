@@ -1,9 +1,11 @@
 package org.shopouille.dto.response;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
 import org.shopouille.entity.Product;
 
 @Data
+@RegisterForReflection
 public class ProductDTO {
     private Long id;
     private String title;
