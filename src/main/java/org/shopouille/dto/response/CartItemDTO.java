@@ -6,5 +6,4 @@ public class CartItemDTO {
     public Integer priceAmount;
     public String priceCurrency;
     public Long variantId;
-    public String sku;
 }
