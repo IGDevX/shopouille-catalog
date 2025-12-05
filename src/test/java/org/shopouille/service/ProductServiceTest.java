@@ -1,17 +1,16 @@
 package org.shopouille.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shopouille.dto.request.CreateProduct;
 import org.shopouille.dto.response.ProductDTO;
 import org.shopouille.entity.Product;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 class ProductServiceTest {

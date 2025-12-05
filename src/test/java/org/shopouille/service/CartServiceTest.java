@@ -1,8 +1,11 @@
 package org.shopouille.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shopouille.dto.request.AddCartItem;
@@ -11,10 +14,6 @@ import org.shopouille.entity.Cart;
 import org.shopouille.entity.CartItem;
 import org.shopouille.entity.Product;
 import org.shopouille.entity.Variant;
-
-import java.time.Instant;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 class CartServiceTest {

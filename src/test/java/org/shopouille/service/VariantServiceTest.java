@@ -1,20 +1,18 @@
 package org.shopouille.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
+import java.time.Instant;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shopouille.dto.request.CreateProductVariant;
 import org.shopouille.dto.response.VariantDTO;
 import org.shopouille.entity.Product;
 import org.shopouille.entity.Variant;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.Instant;
-import java.util.List;
 
 @QuarkusTest
 class VariantServiceTest {
