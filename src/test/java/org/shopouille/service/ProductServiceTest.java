@@ -10,7 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shopouille.dto.request.CreateProduct;
 import org.shopouille.dto.response.ProductDTO;
+import org.shopouille.entity.Cart;
+import org.shopouille.entity.CartItem;
 import org.shopouille.entity.Product;
+import org.shopouille.entity.Variant;
 
 @QuarkusTest
 class ProductServiceTest {
@@ -23,7 +26,10 @@ class ProductServiceTest {
     @BeforeEach
     @Transactional
     void setUp() {
-        Product.deleteAll(); // reset table
+        CartItem.deleteAll();
+        Cart.deleteAll();
+        Variant.deleteAll();
+        Product.deleteAll();
 
         existingProduct = new Product();
         existingProduct.title = "Test Product";

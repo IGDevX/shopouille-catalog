@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shopouille.dto.request.CreateProductVariant;
 import org.shopouille.dto.response.VariantDTO;
+import org.shopouille.entity.Cart;
+import org.shopouille.entity.CartItem;
 import org.shopouille.entity.Product;
 import org.shopouille.entity.Variant;
 
@@ -25,6 +27,8 @@ class VariantServiceTest {
     @BeforeEach
     @Transactional
     void setUp() {
+        CartItem.deleteAll();
+        Cart.deleteAll();
         Variant.deleteAll();
         Product.deleteAll();
 
