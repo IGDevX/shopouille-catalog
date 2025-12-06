@@ -12,12 +12,14 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.shopouille.dto.request.CreateProduct;
 import org.shopouille.dto.response.ProductDTO;
 import org.shopouille.entity.Product;
 import org.shopouille.service.ProductService;
 
 @Path("/product")
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -35,7 +37,7 @@ public class ProductController {
             @DefaultValue("asc") @QueryParam("_order") String order) {
 
         boolean asc = "asc".equalsIgnoreCase(order);
-
+        log.info("Fetching products - pageIndex: {}, pageSize: {}, sortField: {}, order: {}", pageIndex, pageSize, sortField, order);
         List<ProductDTO> products = productService.listAllProductsDTOs(pageIndex, pageSize, sortField, asc);
         long total = productService.count();
 
